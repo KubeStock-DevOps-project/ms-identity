@@ -1,0 +1,48 @@
+# =============================================================================
+# KubeStock - Identity Service
+# Self-contained Docker Compose for Development & Testing
+# =============================================================================
+# Note: Identity service has no database - it's a SCIM2 proxy to Asgardeo
+# Usage:
+#   docker compose up -d          # Start service
+#   docker compose down            # Stop service
+#   docker compose logs -f         # View logs
+# =============================================================================
+
+version: '3.8'
+
+services:
+  # ─────────────────────────────────────────────────────────────────
+  # Identity Service
+  # ─────────────────────────────────────────────────────────────────
+  identity-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: identity-service
+    restart: unless-stopped
+    environment:
+      NODE_ENV: development
+      PORT: 3006
+      
+      # Asgardeo Configuration (required - override in .env)
+      ASGARDEO_ORG_NAME: ${ASGARDEO_ORG_NAME:-your-org}
+      ASGARDEO_CLIENT_ID: ${ASGARDEO_CLIENT_ID:-your-client-id}
+      ASGARDEO_CLIENT_SECRET: ${ASGARDEO_CLIENT_SECRET:-your-client-secret}
+      ASGARDEO_JWKS_URL: ${ASGARDEO_JWKS_URL:-https://api.asgardeo.io/t/your-org/oauth2/jwks}
+      ASGARDEO_SCIM2_URL: ${ASGARDEO_SCIM2_URL:-https://api.asgardeo.io/t/your-org/scim2}
+      ASGARDEO_TOKEN_URL: ${ASGARDEO_TOKEN_URL:-https://api.asgardeo.io/t/your-org/oauth2/token}
+    ports:
+      - "3006:3006"
+    volumes:
+      - ./src:/app/src:ro
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3006/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+networks:
+  default:
+    name: identity-network
