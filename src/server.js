@@ -35,8 +35,8 @@ app.get("/metrics", async (req, res) => {
   }
 });
 
-// API Routes (all require admin auth)
-app.use("/api/identity", userRoutes);
+// API Routes - gateway strips /api/identity prefix before forwarding
+app.use("/", userRoutes);
 
 // 404 handler
 app.use((req, res) => {
