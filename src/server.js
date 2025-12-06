@@ -35,7 +35,7 @@ app.get("/metrics", async (req, res) => {
   }
 });
 
-// API Routes - gateway strips /api/identity prefix before forwarding
+// API Routes - gateway strips /api/identity prefix before forwarding.
 app.use("/", userRoutes);
 
 // 404 handler
