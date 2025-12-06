@@ -100,7 +100,7 @@ describe('404 Handler', () => {
 describe('Protected Routes', () => {
   it('should require authentication for /api/identity routes', async () => {
     const response = await request(app)
-      .get('/api/identity/suppliers')
+      .get('/suppliers')
       .expect(401);
 
     expect(response.body.success).toBe(false);
@@ -109,7 +109,7 @@ describe('Protected Routes', () => {
 
   it('should reject invalid Bearer token format', async () => {
     const response = await request(app)
-      .get('/api/identity/suppliers')
+      .get('/suppliers')
       .set('Authorization', 'InvalidToken')
       .expect(401);
 

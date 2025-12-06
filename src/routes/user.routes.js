@@ -7,22 +7,19 @@ const router = express.Router();
 const userController = require("../controllers/user.controller");
 const { adminOnly } = require("../middleware/auth.middleware");
 
-// Apply admin authentication to all routes
-router.use(adminOnly);
-
 // Supplier routes
-router.get("/suppliers", userController.listSuppliers);
-router.post("/suppliers", userController.createSupplier);
+router.get("/suppliers", adminOnly, userController.listSuppliers);
+router.post("/suppliers", adminOnly, userController.createSupplier);
 
 // Warehouse staff routes
-router.get("/staff", userController.listWarehouseStaff);
-router.post("/staff", userController.createWarehouseStaff);
+router.get("/staff", adminOnly, userController.listWarehouseStaff);
+router.post("/staff", adminOnly, userController.createWarehouseStaff);
 
 // Generic user routes
-router.get("/users/:userId", userController.getUser);
-router.delete("/users/:userId", userController.deleteUser);
+router.get("/users/:userId", adminOnly, userController.getUser);
+router.delete("/users/:userId", adminOnly, userController.deleteUser);
 
 // Group routes
-router.get("/groups", userController.listGroups);
+router.get("/groups", adminOnly, userController.listGroups);
 
 module.exports = router;
