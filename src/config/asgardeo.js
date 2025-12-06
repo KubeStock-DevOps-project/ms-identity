@@ -9,8 +9,8 @@ class AsgardeoClient {
     constructor() {
         this.org = process.env.ASGARDEO_ORG;
         this.baseUrl = process.env.ASGARDEO_BASE_URL;
-        this.clientId = process.env.ASGARDEO_CLIENT_ID;
-        this.clientSecret = process.env.ASGARDEO_CLIENT_SECRET;
+        this.clientId = process.env.ASGARDEO_M2M_CLIENT_ID;
+        this.clientSecret = process.env.ASGARDEO_M2M_CLIENT_SECRET;
         this.tokenUrl = process.env.ASGARDEO_TOKEN_URL;
         this.scim2Url = process.env.ASGARDEO_SCIM2_URL;
 
